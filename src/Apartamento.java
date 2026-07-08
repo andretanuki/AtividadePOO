@@ -4,6 +4,9 @@ public class Apartamento extends Imovel{
     private double vlrCondominio;
     private double iptu;
 
+    public Apartamento(){
+    }
+
     public Apartamento(Endereco endereco, double valor, double area, int andar, int numeroApt, double vlrCondominio, double iptu) {
         super(endereco, valor, area);
         setAndar(andar);
@@ -41,7 +44,7 @@ public class Apartamento extends Imovel{
     }
 
     @Override
-    public double calculaValorFinal() {
+    public double calcularValorFinal() {
         return getValor() + this.vlrCondominio + this.iptu;
     }
     @Override
@@ -51,7 +54,7 @@ public class Apartamento extends Imovel{
                "Nº Apt:   " + numeroApt + "\n" +
                "Condom.:  " + vlrCondominio + "\n" +
                "IPTU:     " + iptu + "\n" +
-               "Valor Final:" + calculaValorFinal() + "\n" +
+               "Valor Final:" + calcularValorFinal() + "\n" +
                "========================";
     }
 }

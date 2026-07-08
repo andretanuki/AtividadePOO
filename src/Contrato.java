@@ -15,7 +15,7 @@ public class Contrato{
         this.cliente = cliente;
         this.imovel = imovel;
         this.tipoContrato = tipoContrato;
-        this.valorAcordado = imovel.calculaValorFinal();
+        this.valorAcordado = imovel.calcularValorFinal();
     }
 
     // Getters
@@ -54,7 +54,7 @@ public class Contrato{
     }
 
     public void setValorAcordado(double valorAcordado) throws ValorImovelInvalidoException {
-        if(valorAcordado < 0) throw new ValorImovelInvalidoException();
+        if(valorAcordado <= 0) throw new ValorImovelInvalidoException();
         this.valorAcordado = valorAcordado;
     }
 }

@@ -1,3 +1,5 @@
+import java.util.Objects;
+
 public abstract class Imovel implements Calculavel{
     private int cod;
     private Endereco endereco;
@@ -5,6 +7,9 @@ public abstract class Imovel implements Calculavel{
     private double area;
     private StatusImovel status;
     private static int contador = 1;
+
+    public Imovel(){
+    }
     
     public Imovel(Endereco endereco, double valor, double area) {
         this.cod = contador++;
@@ -48,6 +53,10 @@ public abstract class Imovel implements Calculavel{
         this.status = status;
     }
 
+    public void setCod(int cod) {
+        this.cod = cod;
+    }
+
     @Override
     public String toString() {
         return "=== Dados do Imóvel ===\n" +
@@ -60,13 +69,16 @@ public abstract class Imovel implements Calculavel{
     }
 
     @Override
+    public int hashCode(){
+        return Objects.hash(cod);
+    }
+
+    @Override
     public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (obj == null || getClass() != obj.getClass()) {
-            return false;
-        }
+        if (this == obj) return true;
+        if (obj == null) return false;
+        if (!(obj instanceof Imovel)) return false;
+
         Imovel imovel = (Imovel) obj;
         return cod == imovel.cod;
     }

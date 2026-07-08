@@ -3,6 +3,10 @@ public class Casa extends Imovel{
     private boolean garagem;
     private double iptu;
 
+    public Casa(){
+
+    }
+
     public Casa(Endereco endereco, double valor, double area, int nrQuartos, boolean garagem, double iptu) {
         super(endereco, valor, area);
         setNrQuartos(nrQuartos);
@@ -33,7 +37,7 @@ public class Casa extends Imovel{
     }
 
     @Override
-    public double calculaValorFinal() {
+    public double calcularValorFinal() {
         return getValor() + this.iptu;
     }
     @Override
@@ -43,7 +47,7 @@ public class Casa extends Imovel{
                "Quartos:  " + nrQuartos + "\n" +
                "Garagem:  " + temGaragem + "\n" +
                "IPTU:     " + iptu + "\n" +
-               "Valor Final:" + calculaValorFinal() + "\n" +
+               "Valor Final:" + calcularValorFinal() + "\n" +
                "========================";
     }
 }

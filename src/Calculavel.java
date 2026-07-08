@@ -1,3 +1,3 @@
 public interface Calculavel{
-    public double calculaValorFinal();
+    public double calcularValorFinal();
 }

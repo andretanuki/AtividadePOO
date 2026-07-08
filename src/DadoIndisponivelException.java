@@ -10,11 +10,11 @@ public class DadoIndisponivelException extends Exception{
     }
 
     public DadoIndisponivelException(Cliente c) {
-        super("Cliente "+ c.getCpf() + "nao encontrado na nossa base de Dados");
+        super("Cliente "+ c.getCpf() + " nao encontrado na nossa base de Dados");
     }
 
     public DadoIndisponivelException(Imovel i) {
-        super("Imovel "+ i.getCod() + "nao encontrado na nossa base de Dados");
+        super("Imovel "+ i.getCod() + " nao encontrado na nossa base de Dados");
     }
 
 }

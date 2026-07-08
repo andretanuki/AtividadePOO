@@ -12,14 +12,22 @@ public class ServicoImobiliaria{
         contratos = new ArrayList<Contrato>(1024);
     }
 
-    public void cadastrarCliente(Cliente c) throws CpfJaExisteException{
-        if(this.clientes.contains(c)) throw new CpfJaExisteException();
-        clientes.add(c);
+    public void cadastrarCliente(Cliente c) {
+        try{
+            if(this.clientes.contains(c)) throw new CpfJaExisteException(); 
+            clientes.add(c);
+        }catch (CpfJaExisteException e){
+            System.out.println("Erro: " + e.getMessage());
+        }
     }
 
-    public void cadastrarImovel(Imovel i) throws ImovelIndisponivelException{
-        if(this.imoveis.contains(i)) throw new ImovelIndisponivelException("O imovel já está cadastrado");
-        imoveis.add(i);
+    public void cadastrarImovel(Imovel i) {
+        try{
+            if(this.imoveis.contains(i)) throw new ImovelIndisponivelException("O imovel já está cadastrado");
+            imoveis.add(i);
+        }catch(ImovelIndisponivelException e){
+            System.out.println("Erro: "+ e.getMessage());
+        }
     }
 
     public void venderImovel(Imovel i, Cliente comprador) {
@@ -30,10 +38,13 @@ public class ServicoImobiliaria{
             if(clienteSelecionado==null)  throw new DadoIndisponivelException(comprador); 
             if(imovelSelecionado == null) throw new DadoIndisponivelException(i); 
 
-            contratos.add(new Contrato(clienteSelecionado, imovelSelecionado, "Venda"));
+            Contrato novoContrato = new Contrato(clienteSelecionado, imovelSelecionado, "Venda");
+            contratos.add(novoContrato);
             imovelSelecionado.setStatus(StatusImovel.Vendido);
 
-            System.out.println("Venda Realizada com Sucesso");
+            System.out.println("Venda Realizada com Sucesso\n");
+            System.out.println(novoContrato.emitirContrato());
+
 
         }catch(DadoIndisponivelException | ImovelIndisponivelException e){
             System.out.println("Erro ao Realizar a Venda: "+e.getMessage());
@@ -50,8 +61,12 @@ public class ServicoImobiliaria{
             if(imovelSelecionado == null) throw new DadoIndisponivelException(i); 
 
             Contrato novoContrato = new Contrato(clienteSelecionado, imovelSelecionado, "Aluguel", valorMensal);
-            imovelSelecionado.setStatus(StatusImovel.Alugado);
+
             contratos.add(novoContrato);
+            imovelSelecionado.setStatus(StatusImovel.Alugado);
+
+            System.out.println("Aluguel Realizado com Sucesso\n");
+            System.out.println(novoContrato.emitirContrato());
 
         }catch (ImovelIndisponivelException | DadoIndisponivelException | ValorImovelInvalidoException e ){
             System.out.println("Erro ao Alugar Imovel: "+ e.getMessage());
@@ -77,34 +92,39 @@ public class ServicoImobiliaria{
 
 
     public List<Imovel> buscarImovelPorTipo(String tipo){
-        List<Imovel> imoveis = new ArrayList<Imovel>();
-        for (Contrato c: contratos) {
-            if(c.getTipoContrato().equals(tipo)){
-                imoveis.add(c.getImovel());
+        List<Imovel> resultado = new ArrayList<>();
+        for (Imovel i : imoveis) {
+            if ((tipo.equalsIgnoreCase("Casa") && i instanceof Casa)
+            || (tipo.equalsIgnoreCase("Apartamento") && i instanceof Apartamento)
+            || (tipo.equalsIgnoreCase("Terreno") && i instanceof Terreno)) {
+                resultado.add(i);
             }
-        }   
-        return imoveis;
+        }
+        return resultado;
     }
 
     public List<Imovel> buscarImovelPorStatus(String status){
-
         List<Imovel> imovelStatus  = new ArrayList<Imovel>();
+        try{
 
-        StatusImovel statusSelecionado;
-        if(status.toUpperCase().equals("VENDIDO")) statusSelecionado = StatusImovel.Vendido;
-        else if(status.toUpperCase().equals("ALUGADO")) statusSelecionado = StatusImovel.Alugado;
-        else if(status.toUpperCase().equals("DISPONIVEL")) statusSelecionado = StatusImovel.Disponivel;
-        else throw new IllegalArgumentException("Tipo de Status nao Existe");
+            StatusImovel statusSelecionado;
+            if(status.toUpperCase().equals("VENDIDO")) statusSelecionado = StatusImovel.Vendido;
+            else if(status.toUpperCase().equals("ALUGADO")) statusSelecionado = StatusImovel.Alugado;
+            else if(status.toUpperCase().equals("DISPONIVEL")) statusSelecionado = StatusImovel.Disponivel;
+            else throw new IllegalArgumentException("Tipo de Status nao Existe");
 
-        for (Imovel i: imoveis) {
-            if(i.getStatus() == statusSelecionado){
-                imovelStatus.add(i);
-            }
-        }   
+            for (Imovel i: imoveis) {
+                if(i.getStatus() == statusSelecionado){
+                    imovelStatus.add(i);
+                }
+            }   
+        }catch (IllegalArgumentException e){
+            System.out.println("Erro: " + e.getMessage());
+        }
         return imovelStatus;
     }
 
-    public void gerarRelatorio(){
+    public void gerarRelatorios(){
         int quantidadeImovelDisponivel = 0;
         int quantidadeImovelAlugado = 0;
         int quantidadeImovelVendido = 0;
@@ -116,7 +136,7 @@ public class ServicoImobiliaria{
             else if(i.getStatus()==StatusImovel.Vendido) quantidadeImovelVendido++;
             else if(i.getStatus()==StatusImovel.Alugado) quantidadeImovelAlugado++ ;
 
-            double valorAtual = i.calculaValorFinal();
+            double valorAtual = i.calcularValorFinal();
             if(valorAtual>valorMaisCaro){
                 valorMaisCaro=valorAtual;
                 imovelMaisCaro = i;
@@ -140,5 +160,31 @@ public class ServicoImobiliaria{
         System.out.println();
         System.out.println("Imovel mais caro: \n" + ((imovelMaisCaro==null)?"Não há":imovelMaisCaro.toString()));
     }
+
+    public ArrayList<Cliente> getClientes() {
+        return clientes;
+    }
+
+    public void setClientes(ArrayList<Cliente> clientes) {
+        this.clientes = clientes;
+    }
+
+    public ArrayList<Imovel> getImoveis() {
+        return imoveis;
+    }
+
+    public void setImoveis(ArrayList<Imovel> imoveis) {
+        this.imoveis = imoveis;
+    }
+
+    public ArrayList<Contrato> getContratos() {
+        return contratos;
+    }
+
+    public void setContratos(ArrayList<Contrato> contratos) {
+        this.contratos = contratos;
+    }
+
+    
 }
 

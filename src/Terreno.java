@@ -1,6 +1,9 @@
 public class Terreno extends Imovel{
     private TipoTerreno tipo;
 
+    public Terreno(){
+
+    }
     public Terreno(Endereco endereco, double valor, double area, TipoTerreno tipo) {
         super(endereco, valor, area);
         setTipo(tipo);
@@ -17,14 +20,14 @@ public class Terreno extends Imovel{
     }
 
     @Override
-    public double calculaValorFinal() {
+    public double calcularValorFinal() {
         return getValor() * 1.08;
     }
     @Override
     public String toString() {
         return super.toString() + "Terreno\n" +
                "Tipo:     " + this.tipo + "\n" +
-               "Valor Final:" + calculaValorFinal() + "\n" +
+               "Valor Final:" + calcularValorFinal() + "\n" +
                "========================";
     }
 }
