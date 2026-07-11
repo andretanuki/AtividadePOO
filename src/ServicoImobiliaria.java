@@ -16,6 +16,7 @@ public class ServicoImobiliaria{
         try{
             if(this.clientes.contains(c)) throw new CpfJaExisteException(); 
             clientes.add(c);
+            System.out.println("\nCliente Cadastrado com Sucesso!");
         }catch (CpfJaExisteException e){
             System.out.println("Erro: " + e.getMessage());
         }

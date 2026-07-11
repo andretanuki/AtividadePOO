@@ -11,12 +11,12 @@ public abstract class Imovel implements Calculavel{
     public Imovel(){
     }
     
-    public Imovel(Endereco endereco, double valor, double area) throws ValorImovelInvalidoException {
-        this.cod = contador++;
+    public Imovel(Endereco endereco, double valor, double area) throws ValorImovelInvalidoException, AreaInvalidaException {
         setEndereco(endereco);
         setValor(valor);
         setArea(area);
         this.status = StatusImovel.Disponivel;
+        this.cod = contador++;
     }
 
     // Getters
@@ -42,11 +42,12 @@ public abstract class Imovel implements Calculavel{
     }
     public void setValor(double valor) throws ValorImovelInvalidoException {
         if (valor <= 0) {
-            throw new ValorImovelInvalidoException("Erro: O valor do imóvel deve ser maior que zero.");
+            throw new ValorImovelInvalidoException("O valor do imóvel deve ser maior que zero.");
         }
         this.valor = valor;
     }
-    public void setArea(double area) {
+    public void setArea(double area) throws AreaInvalidaException {
+        if (area <= 0) throw new AreaInvalidaException();
         this.area = area;
     }
     public void setStatus(StatusImovel status) {

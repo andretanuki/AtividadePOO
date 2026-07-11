@@ -4,7 +4,7 @@ public class Terreno extends Imovel{
     public Terreno(){
 
     }
-    public Terreno(Endereco endereco, double valor, double area, TipoTerreno tipo) throws ValorImovelInvalidoException {
+    public Terreno(Endereco endereco, double valor, double area, TipoTerreno tipo) throws ValorImovelInvalidoException, AreaInvalidaException {
         super(endereco, valor, area);
         setTipo(tipo);
     }

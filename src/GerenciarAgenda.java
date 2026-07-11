@@ -76,6 +76,7 @@ class GerenciarAgenda{
     }
 
     private static void cadastrarCliente() {
+        try{
             System.out.println("====CADASTRO DE CLIENTE====\n");
             System.out.print("Nome: ");
             String nome = s.nextLine();
@@ -88,11 +89,14 @@ class GerenciarAgenda{
 
             Cliente c = new Cliente(nome, cpf, telefone, email);
             servico.cadastrarCliente(c);
-
-            System.out.println("\nCliente Cadastrado com Sucesso!");
+        }catch(CpfInvalidoException | NomeInvalidoException | TelefoneInvalidoException | EmailInvalidoException e){
+            System.out.println("Erro: " + e.getMessage());
+        }
     }
 
     private static void cadastrarImovel() {
+        Imovel imovel = null;
+        try{
             System.out.println("====CADASTRO DE IMOVEL====\n");
             System.out.print("Logradouro: ");
             String logradouro = s.nextLine();
@@ -112,8 +116,6 @@ class GerenciarAgenda{
             System.out.println("\nTipo do Imóvel: 1-Casa; 2-Apartamento; 3-Terreno");
             System.out.print("R: ");
             String tipo = s.nextLine();
-
-            Imovel imovel = null;
             switch (tipo) {
                 case "1":
                     System.out.print("Nº de Quartos: ");
@@ -146,9 +148,14 @@ class GerenciarAgenda{
                     System.out.println("\nTipo de Imóvel Inválido!");
                     return;
             }
-
-            servico.cadastrarImovel(imovel);
-            System.out.println("\nImóvel Cadastrado com Sucesso! Código: "+imovel.getCod());
+        }catch(ValorImovelInvalidoException | AreaInvalidaException e){
+            System.out.println("Erro: " + e.getMessage());
+            return;
+        }catch(NumberFormatException e){
+            System.out.println("\nErro: valor numérico inválido.");
+        }
+        servico.cadastrarImovel(imovel);
+        System.out.println("\nImóvel Cadastrado com Sucesso! Código: "+imovel.getCod());
 
     }
 
@@ -183,11 +190,13 @@ class GerenciarAgenda{
             String email = s.nextLine();
             Cliente locatario = new Cliente(nome, cpf, telefone, email);
 
-            System.out.print("Valor Mensal: ");
-            double valorMensal = Double.parseDouble(s.nextLine());
+            System.out.print("Valor Mensal: "); 
+            double valorMensal = Double.parseDouble(s.nextLine()); //NumberFormat
 
             servico.alugarImovel(imovel, locatario, valorMensal);
 
+        }catch(NomeInvalidoException | CpfInvalidoException | TelefoneInvalidoException | EmailInvalidoException e){
+            System.out.println("Erro: "+ e.getMessage()); 
         }catch(NumberFormatException e){
             System.out.println("\nErro: valor numérico inválido.");
         }
@@ -241,8 +250,10 @@ class GerenciarAgenda{
             String email = s.nextLine();
             Cliente comprador = new Cliente(nome, cpf, telefone, email);
 
-            servico.venderImovel(imovel, comprador);
+            servico.venderImovel(imovel, comprador); //NumberFormat
 
+        }catch(CpfInvalidoException | NomeInvalidoException | TelefoneInvalidoException | EmailInvalidoException e){
+            System.out.println("Erro: " + e.getMessage());
         }catch(NumberFormatException e){
             System.out.println("\nErro: valor numérico inválido.");
         }
@@ -253,7 +264,7 @@ class GerenciarAgenda{
         servico.gerarRelatorios();
     }
 
-    private static Imovel lerImovel() {
+    private static Imovel lerImovel() throws NumberFormatException {
         Imovel imovel = null;
 
         System.out.println("\nTipo do Imóvel: 1-Casa; 2-Apartamento; 3-Terreno");
@@ -261,6 +272,7 @@ class GerenciarAgenda{
         String tipo = s.nextLine();
 
         System.out.print("Código do Imóvel: ");
+
         int cod = Integer.parseInt(s.nextLine());
 
         switch (tipo) {

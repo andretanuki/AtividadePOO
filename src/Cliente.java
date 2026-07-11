@@ -30,19 +30,19 @@ public class Cliente{
     // setters
     public void setNome(String nome) throws NomeInvalidoException {
         if (nome == null || nome.trim().isEmpty()) {
-            throw new NomeInvalidoException("Erro: nome inválido");
+            throw new NomeInvalidoException("Nome inválido");
         }
         this.nome = nome;
     }
     
     public void setCpf(String cpf) throws CpfInvalidoException {
         if (cpf == null) {
-            throw new CpfInvalidoException("Erro: CPF nulo é inválido.");
+            throw new CpfInvalidoException("CPF nulo é inválido.");
         }
         cpf = cpf.replaceAll("\\D", "");
 
         if (cpf.length() != 11 || cpf.matches("(\\d)\\1{10}")) {
-            throw new CpfInvalidoException("Erro: CPF inválido.");
+            throw new CpfInvalidoException("CPF inválido.");
         }
         validarDigitosCpf(cpf);
         this.cpf = cpf;
@@ -50,18 +50,18 @@ public class Cliente{
     
     public void setTelefone(String telefone) throws TelefoneInvalidoException {
         if (telefone == null) {
-            throw new TelefoneInvalidoException("Erro: Telefone nulo é inválido.");
+            throw new TelefoneInvalidoException("Telefone nulo é inválido.");
         }
         telefone = telefone.replaceAll("\\D", "");
 
         if (telefone.length() != 11) {
-            throw new TelefoneInvalidoException("Erro: Telefone inválido.");
+            throw new TelefoneInvalidoException("Telefone inválido.");
 		}
 		this.telefone = telefone;
     }
     public void setEmail(String email) throws EmailInvalidoException {
         if (email == null || email.trim().isEmpty() || !email.contains("@")) {
-            throw new EmailInvalidoException("Erro: email inválido");
+            throw new EmailInvalidoException("Email inválido");
         }
         this.email = email;
     }
@@ -91,7 +91,7 @@ public class Cliente{
         int digitoInformado2 = Character.getNumericValue(cpf.charAt(10));
 
         if (digito1 != digitoInformado1 || digito2 != digitoInformado2) {
-            throw new CpfInvalidoException("Erro: Os dígitos verificadores do CPF Não batem.");
+            throw new CpfInvalidoException("Os dígitos verificadores do CPF Não batem.");
         }
     }
 

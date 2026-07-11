@@ -7,7 +7,7 @@ public class Casa extends Imovel{
 
     }
 
-    public Casa(Endereco endereco, double valor, double area, int nrQuartos, boolean garagem, double iptu) throws ValorImovelInvalidoException {
+    public Casa(Endereco endereco, double valor, double area, int nrQuartos, boolean garagem, double iptu) throws ValorImovelInvalidoException, AreaInvalidaException {
         super(endereco, valor, area);
         setNrQuartos(nrQuartos);
         setGaragem(garagem);

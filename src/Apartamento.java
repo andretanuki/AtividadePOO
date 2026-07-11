@@ -7,7 +7,7 @@ public class Apartamento extends Imovel{
     public Apartamento(){
     }
 
-    public Apartamento(Endereco endereco, double valor, double area, int andar, int numeroApt, double vlrCondominio, double iptu) throws ValorImovelInvalidoException {
+    public Apartamento(Endereco endereco, double valor, double area, int andar, int numeroApt, double vlrCondominio, double iptu) throws ValorImovelInvalidoException, AreaInvalidaException {
         super(endereco, valor, area);
         setAndar(andar);
         setNumeroApt(numeroApt);
