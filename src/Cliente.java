@@ -6,7 +6,7 @@ public class Cliente{
     private String telefone;
     private String email;
 
-    public Cliente (String  nome, String cpf, String telefone, String email) {
+    public Cliente (String  nome, String cpf, String telefone, String email) throws NomeInvalidoException, CpfInvalidoException, TelefoneInvalidoException, EmailInvalidoException {
 		setNome(nome);
 		setCpf(cpf);
 		setTelefone(telefone);
@@ -28,39 +28,71 @@ public class Cliente{
     }
     
     // setters
-    public void setNome(String nome) {
+    public void setNome(String nome) throws NomeInvalidoException {
         if (nome == null || nome.trim().isEmpty()) {
-            throw new IllegalArgumentException("Erro: nome inválido");
+            throw new NomeInvalidoException("Erro: nome inválido");
         }
         this.nome = nome;
     }
-    public void setCpf(String cpf) {
+    
+    public void setCpf(String cpf) throws CpfInvalidoException {
         if (cpf == null) {
-            throw new IllegalArgumentException("Erro: CPF inválido");
+            throw new CpfInvalidoException("Erro: CPF nulo é inválido.");
         }
         cpf = cpf.replaceAll("\\D", "");
 
-	    if (cpf.length() != 11 || cpf.matches("(\\d)\\1{10}")) {
-	        throw new IllegalArgumentException("Erro: CPF inválido.");
-	    }
-	    this.cpf = cpf;
+        if (cpf.length() != 11 || cpf.matches("(\\d)\\1{10}")) {
+            throw new CpfInvalidoException("Erro: CPF inválido.");
+        }
+        validarDigitosCpf(cpf);
+        this.cpf = cpf;
     }
-    public void setTelefone(String telefone) {
+    
+    public void setTelefone(String telefone) throws TelefoneInvalidoException {
         if (telefone == null) {
-	        throw new IllegalArgumentException("Telefone inválido.");
-	    }
-		telefone = telefone.replaceAll("\\D", "");
-		
+            throw new TelefoneInvalidoException("Erro: Telefone nulo é inválido.");
+        }
+        telefone = telefone.replaceAll("\\D", "");
+
         if (telefone.length() != 11) {
-			throw new IllegalArgumentException("Telefone inválido");
+            throw new TelefoneInvalidoException("Erro: Telefone inválido.");
 		}
 		this.telefone = telefone;
     }
-    public void setEmail(String email) {
+    public void setEmail(String email) throws EmailInvalidoException {
         if (email == null || email.trim().isEmpty() || !email.contains("@")) {
-            throw new IllegalArgumentException("Erro: email inválido");
+            throw new EmailInvalidoException("Erro: email inválido");
         }
         this.email = email;
+    }
+
+    private void validarDigitosCpf(String cpf) throws CpfInvalidoException {
+        int soma1 = 0;
+        int peso1 = 10;
+        for (int i = 0; i < 9; i++) {
+            int num = Character.getNumericValue(cpf.charAt(i));
+            soma1 += (num * peso1);
+            peso1--;
+        }
+        int resto1 = soma1 % 11;
+        int digito1 = (resto1 < 2) ? 0 : (11 - resto1);
+
+        int soma2 = 0;
+        int peso2 = 11;
+        for (int i = 0; i < 10; i++) {
+            int num = Character.getNumericValue(cpf.charAt(i));
+            soma2 += (num * peso2);
+            peso2--;
+        }
+        int resto2 = soma2 % 11;
+        int digito2 = (resto2 < 2) ? 0 : (11 - resto2);
+
+        int digitoInformado1 = Character.getNumericValue(cpf.charAt(9));
+        int digitoInformado2 = Character.getNumericValue(cpf.charAt(10));
+
+        if (digito1 != digitoInformado1 || digito2 != digitoInformado2) {
+            throw new CpfInvalidoException("Erro: Os dígitos verificadores do CPF Não batem.");
+        }
     }
 
     @Override
