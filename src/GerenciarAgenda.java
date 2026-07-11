@@ -153,6 +153,7 @@ class GerenciarAgenda{
             return;
         }catch(NumberFormatException e){
             System.out.println("\nErro: valor numérico inválido.");
+            return;
         }
         servico.cadastrarImovel(imovel);
         System.out.println("\nImóvel Cadastrado com Sucesso! Código: "+imovel.getCod());
@@ -197,8 +198,10 @@ class GerenciarAgenda{
 
         }catch(NomeInvalidoException | CpfInvalidoException | TelefoneInvalidoException | EmailInvalidoException e){
             System.out.println("Erro: "+ e.getMessage()); 
+            return;
         }catch(NumberFormatException e){
             System.out.println("\nErro: valor numérico inválido.");
+            return;
         }
     }
 
@@ -254,8 +257,10 @@ class GerenciarAgenda{
 
         }catch(CpfInvalidoException | NomeInvalidoException | TelefoneInvalidoException | EmailInvalidoException e){
             System.out.println("Erro: " + e.getMessage());
+            return;
         }catch(NumberFormatException e){
             System.out.println("\nErro: valor numérico inválido.");
+            return;
         }
     }
 
